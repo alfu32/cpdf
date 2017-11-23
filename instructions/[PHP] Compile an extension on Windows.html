@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)http://blog.benoitblanchon.fr/build-php-extension-on-windows/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>[PHP] Compile an extension on Windows</title>
+
+		
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<meta name="description" content="">
+
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link href="./[PHP] Compile an extension on Windows_files/css" rel="stylesheet" type="text/css">
+
+		<link rel="stylesheet" href="./[PHP] Compile an extension on Windows_files/font-awesome.min.css">
+		<link rel="stylesheet" href="./[PHP] Compile an extension on Windows_files/pure-min.css">
+		<link rel="stylesheet" href="./[PHP] Compile an extension on Windows_files/grids-responsive-min.css">		
+		<link rel="stylesheet" href="./[PHP] Compile an extension on Windows_files/jquery-1.10.2.min.js.download">		
+		<link rel="stylesheet" href="./[PHP] Compile an extension on Windows_files/screen.css">
+		
+		<link rel="shortcut icon" href="http://blog.benoitblanchon.fr/assets/images/favicon.ico?v=d9536f32a5" type="image/x-icon">
+
+		<link rel="canonical" href="http://blog.benoitblanchon.fr/build-php-extension-on-windows/">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="http://blog.benoitblanchon.fr/build-php-extension-on-windows/amp/">
+    
+    <meta property="og:site_name" content="Good Code Smell">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="[PHP] Compile an extension on Windows">
+    <meta property="og:description" content="I recently wrote a PHP extension and while the documentation is very clear on how to build it on Linux, there is not so much information on how to compile an extension on Windows. This article explains how to build a PHP extension with Visual Studio. Requirements This guide assumes">
+    <meta property="og:url" content="http://blog.benoitblanchon.fr/build-php-extension-on-windows/">
+    <meta property="og:image" content="http://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/200px-PHP-logo.svg.png">
+    <meta property="article:published_time" content="2015-01-20T16:27:00.000Z">
+    <meta property="article:modified_time" content="2015-01-21T08:56:35.000Z">
+    <meta property="article:tag" content="PHP">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="[PHP] Compile an extension on Windows">
+    <meta name="twitter:description" content="I recently wrote a PHP extension and while the documentation is very clear on how to build it on Linux, there is not so much information on how to compile an extension on Windows. This article explains how to build a PHP extension with Visual Studio. Requirements This guide assumes">
+    <meta name="twitter:url" content="http://blog.benoitblanchon.fr/build-php-extension-on-windows/">
+    <meta name="twitter:image" content="http://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/200px-PHP-logo.svg.png">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Benoît Blanchon">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="PHP">
+    
+    <script async="" src="./[PHP] Compile an extension on Windows_files/analytics.js.download"></script><script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Good Code Smell",
+        "logo": "http://blog.benoitblanchon.fr/content/images/2014/Jul/Photo_192px-1.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Benoît Blanchon",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://blog.benoitblanchon.fr/content/images/2014/Jul/Photo_128px.jpg",
+            "width": 128,
+            "height": 128
+        },
+        "url": "http://blog.benoitblanchon.fr/author/benoit/",
+        "sameAs": [],
+        "description": "Programming has been my passion since childhood, then my job for more than 10 years.\n\nI learned many languages, but C++ and C# are my favorites."
+    },
+    "headline": "[PHP] Compile an extension on Windows",
+    "url": "http://blog.benoitblanchon.fr/build-php-extension-on-windows/",
+    "datePublished": "2015-01-20T16:27:00.000Z",
+    "dateModified": "2015-01-21T08:56:35.000Z",
+    "image": "http://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/200px-PHP-logo.svg.png",
+    "keywords": "PHP",
+    "description": "I recently wrote a PHP extension and while the documentation is very clear on how to build it on Linux, there is not so much information on how to compile an extension on Windows. This article explains how to build a PHP extension with Visual Studio. Requirements This guide assumes",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://blog.benoitblanchon.fr"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Good Code Smell" href="http://blog.benoitblanchon.fr/rss/">
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46080258-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+				
+	</head>
+
+	<body>
+		<div id="sheet-layer-bottom" style="background-image: url(&quot;/content/images/2013/Nov/CoffeeBeans.jpg&quot;); height: 99px;">
+			<header>
+				<div id="sheet-header-content">
+					<div class="pure-g">
+						<div class="pure-u-1 pure-u-md-1-2">
+							<a class="sheet-title" href="http://blog.benoitblanchon.fr/"><h1 class="sheet-header-title">Good Code Smell</h1></a>
+						</div>
+						<div class="pure-u-1 pure-u-md-1-2">
+							<h1 class="sheet-header-secondary"></h1>
+						</div>
+					</div>
+				</div>
+			</header>
+		</div>
+
+		<div id="sheet-layer-top" style="margin-top: 99px;">
+			<div class="sheet-page-content">
+				
+	<div class="pure-g">
+		<main role="main" class="pure-u-1">
+			<article class="sheet-panel sheet-post post tag-php">
+					<h1 class="sheet-post-title">[PHP] Compile an extension on Windows</h1>
+					<header class="sheet-post-meta">
+						<time datetime="2015-01-20">20 Jan 2015</time>
+							<i class="fa fa-tags sheet-post-tags"></i> <a href="http://blog.benoitblanchon.fr/tag/php/">PHP</a>
+					</header>
+
+					<section class="sheet-post-content">
+					    <p>I recently wrote a PHP extension and while the documentation is very clear on how to build it on Linux, there is not so much information on how to compile an extension on Windows.</p>
+
+<p>This article explains how to build a PHP extension with Visual Studio.</p>
+
+<h1 id="requirements">Requirements</h1>
+
+<p>This guide assumes that you wrote a "Hello World" PHP extension as described <a href="http://devzone.zend.com/303/extension-writing-part-i-introduction-to-php-and-zend/">here</a> and that you compiled it successfully on Linux. </p>
+
+<p>To build your extension on Windows, you'll need:</p>
+
+<ol>
+<li>Visual Studio (I tested  with Visual Studio 2013 Update 4)  </li>
+<li><a href="http://windows.php.net/download/">The PHP source code</a> (I tested with PHP 5.5.20)</li>
+</ol>
+
+<p>In the rest of this article, I assume that:</p>
+
+<ol>
+<li>The PHP source code is located in <code>C:\php-src</code>  </li>
+<li>Your "Hello World" extension source code is located in <code>C:\MyPhpExtensions\hello</code></li>
+</ol>
+
+<h1 id="thebuildprocessonlinux">The build process on Linux</h1>
+
+<p>You should already familiar with the process, but here is a reminder:</p>
+
+<ol>
+<li>Install <code>php-devel</code> package  </li>
+<li>Run <code>phpize</code> to generate the <code>configure</code> script from <code>config.m4</code>.  </li>
+<li>Run <code>./configure --enable-hello</code> to generate the <code>Makefile</code>  </li>
+<li>Run <code>make</code> to build the extension</li>
+</ol>
+
+<h1 id="fromconfigm4toconfigw32">From <code>config.m4</code> to <code>config.w32</code></h1>
+
+<p>On Windows, <code>config.m4</code> is replaced by <code>config.w32</code> which has a different format.</p>
+
+<p>Migrating from <code>config.m4</code> to <code>config.w32</code> is really straighforward, you just need to translate the automake syntax to JavaScript.</p>
+
+<p>Here is a minimalist example:</p>
+
+<pre><code>ARG_ENABLE("hello", "Hello World support", "no");
+if (PHP_HELLO != "no") {
+    EXTENSION("hello", "php_hello.c", true);
+}
+</code></pre>
+
+<p>Don't forget the <code>true</code> as the third argument of the <code>EXTENSION</code> function, it means that we want a DLL instead of a static library.</p>
+
+<p>If you need more information on the syntax, look at the existing <code>config.w32</code> in the PHP source code.</p>
+
+<h1 id="fromphpizetobuildconfbat">From <code>phpize</code> to <code>buildconf.bat</code></h1>
+
+<p>On Windows, you don't call <code>phpize</code> but instead you call <code>buildconf.bat</code>.</p>
+
+<p>Open a Visual Studio developer command prompt (either 64 or 32 bit), and run</p>
+
+<pre><code>cd C:\php-src
+buildconf.bat --add-modules-dir=C:\MyPhpExtensions
+</code></pre>
+
+<p><code>buildconf.bat</code> will scan each subfolder of <code>C:\MyPhpExtensions</code> looking for <code>config.w32</code> files.</p>
+
+<p>It will then generate a <code>configure.bat</code>.</p>
+
+<h1 id="fromconfiguretoconfigurebat">From <code>./configure</code> to <code>configure.bat</code></h1>
+
+<p>The <code>configure</code> script that you used on Linux did exactly what you wanted: it just built the extension. <br>
+But on Windows it's different because the script is designed to build PHP itself.</p>
+
+<p>You need to add command line options to <code>configure.bat</code> to build the minimum number of stuff, so as to make sure that you wont have to solve dependencies to external libraries</p>
+
+<pre><code>cd C:\php-src
+configure.bat --disable-all --enable-cli --enable-hello
+</code></pre>
+
+<p><code>--disable-all</code> is a shortcut for all the <code>--disable-xxx</code> and <code>--without-xxx</code> flags, <code>--enable-cli</code> enables back the PHP command line interface (ie <code>php.exe</code>) and <code>--enable-hello</code> enables your "Hello World" extension.</p>
+
+<p>By default, this will create a "Thread Safe" build. <br>
+If you want a non thread safe build, just add <code>--disable-zts</code> to the command line.</p>
+
+<h1 id="frommaketonmake">From <code>Make</code> to <code>NMake</code></h1>
+
+<p><code>configure.bat</code> generated a <code>Makefile</code> for the Microsoft version of <code>Make</code>.</p>
+
+<p>To start the build, just run:</p>
+
+<pre><code>nmake
+</code></pre>
+
+<p>This will build your PHP extension, as well as <code>php.exe</code>. <br>
+This is handy because you'll need a <code>php.exe</code> that matches the configuration of your extension.</p>
+
+<p>Indeed, in order to be loaded in PHP, your extension must match the PHP build in term of:</p>
+
+<ol>
+<li>word size (32 or 64 bits)  </li>
+<li>thread safety (TS build or NTS build)  </li>
+<li>compiler version (VS9, VS11 etc.)</li>
+</ol>
+
+<p>If you really don't need to build <code>php.exe</code>, you can use this command line:</p>
+
+<pre><code>nmake php_hello.dll
+</code></pre>
+
+<h1 id="thousandsofwarnings">Thousands of warnings</h1>
+
+<p>During the compilation of PHP, the compiler issues a lot of warnings.</p>
+
+<p>If you want to prevent this, just add the following file to <code>c:\php-src\win32\build\config.w32</code>:</p>
+
+<pre><code>ADD_FLAG('CFLAGS', ' /wd4005 /wd4267 /wd4244 ');
+ADD_FLAG('CFLAGS_BD_ZEND', ' /wd4018 /wd4101 /wd4090 /wd4273 ');
+ADD_FLAG('CFLAGS_BD_MAIN', ' /wd4018 /wd4090 ');
+ADD_FLAG('CFLAGS_BD_MAIN_STREAMS', ' /wd4013 ');
+DEFINE('RC', '$(RC) /nologo /d _USING_V110_SDK71_');
+</code></pre>
+
+<p>Also, add the following line to <code>C:\php-src\ext\standard\config.w32</code>:</p>
+
+<pre><code>ADD_FLAG('CFLAGS_BD_EXT_STANDARD', ' /wd4047 /wd4018 ');
+</code></pre>
+
+<p>And finally, add this line to <code>C:\php-src\sapi\cli\config.w32</code>:</p>
+
+<pre><code>ADD_FLAG('CFLAGS_BD_SAPI_CLI', ' /wd4018 ');
+</code></pre>
+
+<h1 id="bonusbestresourcesonphpextensiondevelopment">Bonus: best resources on PHP extension development</h1>
+
+<ul>
+<li><a href="http://devzone.zend.com/303/extension-writing-part-i-introduction-to-php-and-zend/">Extension Writing Part I: Introduction to PHP and Zend</a></li>
+<li><a href="http://devzone.zend.com/317/extension-writing-part-ii-parameters-arrays-and-zvals/">Extension Writing Part II: Parameters, Arrays, and ZVALs</a></li>
+<li><a href="http://devzone.zend.com/318/extension-writing-part-ii-parameters-arrays-and-zvals-continued/">Extension Writing Part II: Parameters, Arrays, and ZVALs [continued]</a></li>
+<li><a href="http://devzone.zend.com/446/extension-writing-part-iii-resources/">Extension Writing Part III: Resources</a></li>
+<li><a href="http://devzone.zend.com/1435/wrapping-c-classes-in-a-php-extension/">Wrapping C++ Classes in a PHP Extension</a></li>
+<li><a href="http://somabo.de/talks/200903_montreal_php_extension_writing.pdf">PHP Extension Writing</a></li>
+<li><a href="http://www.kchodorow.com/blog/2011/08/11/php-extensions-made-eldrich-php-variables/">PHP Extensions Made Eldrich: Working with the API – the PHP C API</a></li>
+<li><a href="http://www.kchodorow.com/blog/2011/08/11/php-extensions-made-eldrich-classes/">PHP Extensions Made Eldrich: Classes</a></li>
+<li><a href="https://wiki.php.net/internals/windows/stepbystepbuild">Build your own PHP on Windows</a></li>
+<li><a href="http://www.phpinternalsbook.com/index.html">PHP Internals Book</a></li>
+<li><a href="http://php.net/manual/en/internals2.ze1.zendapi.php">Zend API: Hacking the Core of PHP</a></li>
+</ul>
+					</section>
+			</article>
+		</main>
+
+		<footer class="pure-u-1">
+			<div class="sheet-panel">
+				<div class="pure-g">
+					<div class="pure-u-1 pure-u-md-1-4">
+							<img class="sheet-author-image pure-img" src="./[PHP] Compile an extension on Windows_files/Photo_128px.jpg" alt="Benoît Blanchon">
+					</div>
+
+					<div class="pure-u-1 pure-u-md-3-4">
+						<div class="sheet-author-blurb">
+							<h2 class="sheet-author-name">Benoît Blanchon</h2>
+							<p class="sheet-author-bio">Programming has been my passion since childhood, then my job for more than 10 years.
+
+I learned many languages, but C++ and C# are my favorites.</p>
+							<p class="sheet-author-bio-sub">
+									<a href="https://maps.google.com/?q=France" target="_blank">France</a>
+							</p>
+						</div>
+					</div>
+
+					<div class="pure-u-1">
+						<div class="sheet-author-links">							
+							<span class="sheet-author-social"><a target="_blank" href="http://stackoverflow.com/users/1164966/benoit-blanchon"><i class="fa fa-stack-overflow"></i></a>
+<a target="_blank" href="http://www.goodreads.com/bblanchon"><i class="fa fa-book"></i></a>
+<a target="_blank" href="https://github.com/bblanchon"><i class="fa fa-github-square"></i></a>
+<a target="_blank" href="http://fr.linkedin.com/pub/beno%C3%AEt-blanchon/42/526/418"><i class="fa fa-linkedin-square"></i></a>
+<a target="_blank" href="https://player.fm/bblanchon/fm"><i class="fa fa-microphone"></i></a></span>
+							<a class="sheet-btn" href="http://blog.benoitblanchon.fr/rss/"><i class="fa fa-rss-square"></i> <span>Subscribe</span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+
+			</div>
+
+			<footer class="sheet-footer">
+				<div class="sheet-footer-content">
+					<div class="pure-g">
+						<div class="pure-u-1 pure-u-md-1-2 sheet-copyright">
+							© <time datetime="2017">2017</time> <a href="http://blog.benoitblanchon.fr/">Good Code Smell</a>
+						</div>
+
+						<div class="pure-u-1 pure-u-md-1-2 sheet-footer-secondary">
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+
+		<!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="./[PHP] Compile an extension on Windows_files/jquery-1.11.3.min.js.download"></script>
+
+		<script src="./[PHP] Compile an extension on Windows_files/main.js.download"></script>
+
+	
+
+</body></html>
